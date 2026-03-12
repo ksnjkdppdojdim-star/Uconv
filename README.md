@@ -4,10 +4,9 @@ A lightweight, multi-language unit converter library supporting distance, weight
 
 ## Supported Languages
 
-- **Node.js** ✅ Fully implemented
-- **Python** ✅ Fully implemented (tests pass)
-- **PHP** ✅ Fully implemented (tests pass)
-
+- **Node.js** ✅ [`@mahounou/uconv` on npm](https://www.npmjs.com/package/@mahounou/uconv)
+- **Python** 🚧 Coming soon
+- **PHP** 🚧 Coming soon
 
 ## API
 
@@ -15,12 +14,14 @@ All implementations follow the same API pattern:
 
 ### Node.js
 ```javascript
-import { convert } from './node/src/index.js';
+import { convert, convertCurrencyLive } from '@mahounou/uconv';
 
 convert("10km", "m");      // 10000
 convert("5lbs", "kg");     // 2.26796
 convert("1hr", "min");     // 60
-convert("100USD", "EUR");  // Implementation varies
+convert("100USD", "EUR");  // static rate
+
+await convertCurrencyLive(100, "USD", "EUR"); // real-time rate
 ```
 
 ### Python
@@ -30,7 +31,7 @@ from uconv import convert
 convert("10km", "m")       # 10000
 convert("5lbs", "kg")      # 2.26796
 convert("1hr", "min")      # 60
-convert("100USD", "EUR")   # Implementation varies
+convert("100USD", "EUR")   # static rate
 ```
 
 ### PHP
@@ -40,21 +41,34 @@ use Uconv\Uconv;
 Uconv::convert("10km", "m");      // 10000
 Uconv::convert("5lbs", "kg");     // 2.26796
 Uconv::convert("1hr", "min");     // 60
-Uconv::convert("100USD", "EUR");  // Implementation varies
+Uconv::convert("100USD", "EUR");  // static rate
+```
+
+## Input Format
+
+Flexible input parsing across all languages:
+```
+"10km"    → no space
+"10 km"   → with space
+"10KM"    → case insensitive
+"-10km"   → negative values
+"1e3km"   → scientific notation
 ```
 
 ## Base Units
 
-- **Distance**: meter (m)
-- **Weight**: gram (g)
-- **Time**: second (s)
-- **Currency**: USD
+| Category | Base Unit |
+|---|---|
+| Distance | meter (m) |
+| Weight | gram (g) |
+| Time | second (s) |
+| Currency | USD |
 
 ## Installation
 
 ### Node.js
 ```bash
-cd node && npm install
+npm install @mahounou/uconv
 ```
 
 ### Python
@@ -72,4 +86,14 @@ cd php && composer install
 ### Node.js
 ```bash
 cd node && npm test
+```
+
+### Python
+```bash
+cd python && pytest
+```
+
+### PHP
+```bash
+cd php && composer test
 ```

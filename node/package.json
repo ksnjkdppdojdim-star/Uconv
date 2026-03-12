@@ -1,6 +1,6 @@
 {
   "name": "@mahounou/uconv",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "description": "Lightweight unit converter library",
   "type": "module",
   "main": "src/index.js",
@@ -15,7 +15,15 @@
     "test": "vitest",
     "test:watch": "vitest --watch"
   },
-  "keywords": ["units", "converter", "measurement", "distance", "weight", "time", "currency"],
+  "keywords": [
+    "units",
+    "converter",
+    "measurement",
+    "distance",
+    "weight",
+    "time",
+    "currency"
+  ],
   "author": "",
   "license": "MIT",
   "repository": {

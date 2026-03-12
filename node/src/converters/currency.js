@@ -1,5 +1,4 @@
 import { getConversionFactor } from '../units.js';
-import { getConversionFactor } from '../units.js';
 import { factorConvert } from '../utils/convert.js';
 
 
@@ -20,17 +19,15 @@ export function convertCurrency(value, fromUnit, toUnit) {
   return factorConvert(value, from, to);
 }
 
-// Async live rates — optional
 export async function convertCurrencyLive(value, fromUnit, toUnit) {
-  const res = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`);
-  if (!res.ok) throw new Error('Failed to fetch live exchange rates');
-  const { rates } = await res.json();
-
   const from = fromUnit.toUpperCase();
   const to   = toUnit.toUpperCase();
 
-  if (!rates[from]) throw new Error(`Unknown currency: ${from}`);
-  if (!rates[to])   throw new Error(`Unknown currency: ${to}`);
+  const res = await fetch(`https://api.frankfurter.app/latest?from=${from}&to=${to}`);
+  if (!res.ok) throw new Error('Failed to fetch live rates');
 
-  return (value / rates[from]) * rates[to];
+  const { rates } = await res.json();
+  if (!rates[to]) throw new Error(`Unknown currency: ${to}`);
+
+  return value * rates[to];
 }

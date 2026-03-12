@@ -75,3 +75,5 @@ export function convert(from, to) {
     throw new Error(`Conversion failed: ${error.message}`);
   }
 }
+
+export { convertCurrencyLive } from './converters/currency.js';

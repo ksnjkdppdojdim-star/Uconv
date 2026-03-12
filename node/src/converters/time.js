@@ -1,5 +1,4 @@
 import { getConversionFactor } from '../units.js';
-import { getConversionFactor } from '../units.js';
 import { factorConvert } from '../utils/convert.js';
 
 /**
