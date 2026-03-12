@@ -1,0 +1,30 @@
+{
+    "name": "uconv/uconv",
+    "version": "0.1.0",
+    "description": "Lightweight unit converter library",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["units", "converter", "measurement", "distance", "weight", "time", "currency"],
+    "authors": [
+        {
+            "name": "",
+            "email": ""
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Uconv\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Uconv\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+"require-dev": {
+    "phpunit/phpunit": "^9.0"
+}
+}
