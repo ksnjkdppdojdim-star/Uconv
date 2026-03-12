@@ -41,46 +41,34 @@ const converters = {
  * @returns {number} Converted value
  */
 export function convert(from, to) {
+  if (typeof to !== 'string' || !to.trim()) {
+    throw new InvalidInputError(to);
+  }
+
+  const toUnit = to.trim().toLowerCase();
+
   try {
-    // Parse input
     const parsed = parseInput(from);
-    if (!parsed) {
-      throw new InvalidInputError(from);
-    }
-    
+    if (!parsed) throw new InvalidInputError(from);
+
     const { value, unit: fromUnit } = parsed;
-    
-    // Validate units exist
-    if (!isValidUnit(fromUnit)) {
-      throw new UnknownUnitError(fromUnit);
-    }
-    
-    if (!isValidUnit(to)) {
-      throw new UnknownUnitError(to);
-    }
-    
-    // Get unit categories
+
+    if (!isValidUnit(fromUnit)) throw new UnknownUnitError(fromUnit);
+    if (!isValidUnit(toUnit))   throw new UnknownUnitError(toUnit);
+
     const fromCategory = getUnitCategory(fromUnit);
-    const toCategory = getUnitCategory(to);
-    
-    // Validate units are compatible
-    if (fromCategory !== toCategory) {
-      throw new IncompatibleUnitsError(fromUnit, to);
-    }
-    
-    // Get appropriate converter
+    const toCategory   = getUnitCategory(toUnit);
+
+    if (fromCategory !== toCategory) throw new IncompatibleUnitsError(fromUnit, toUnit);
+
     const converter = converters[fromCategory];
-    if (!converter) {
-      throw new Error(`No converter available for category: ${fromCategory}`);
-    }
-    
-    // Perform conversion
-    return converter(value, fromUnit, to);
-    
+    if (!converter) throw new Error(`No converter for: ${fromCategory}`);
+
+    return converter(value, fromUnit, toUnit);
+
   } catch (error) {
-    // Re-throw our custom errors, wrap others
-    if (error instanceof UnknownUnitError || 
-        error instanceof InvalidInputError || 
+    if (error instanceof UnknownUnitError ||
+        error instanceof InvalidInputError ||
         error instanceof IncompatibleUnitsError) {
       throw error;
     }

@@ -1,4 +1,6 @@
 import { getConversionFactor } from '../units.js';
+import { getConversionFactor } from '../units.js';
+import { factorConvert } from '../utils/convert.js';
 
 /**
  * Convert time units
@@ -7,15 +9,11 @@ import { getConversionFactor } from '../units.js';
  * @param {string} toUnit - Target unit
  * @returns {number} Converted value
  */
+
+
 export function convertTime(value, fromUnit, toUnit) {
-  const fromFactor = getConversionFactor(fromUnit);
-  const toFactor = getConversionFactor(toUnit);
-  
-  if (fromFactor === null || toFactor === null) {
-    throw new Error('Invalid time unit');
-  }
-  
-  // Convert to base unit (seconds), then to target unit
-  const baseValue = value * fromFactor;
-  return baseValue / toFactor;
+  const from = getConversionFactor(fromUnit);
+  const to   = getConversionFactor(toUnit);
+  if (from === null || to === null) throw new Error('Invalid time unit');
+  return factorConvert(value, from, to);
 }

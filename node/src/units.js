@@ -77,6 +77,8 @@ export const UNITS = {
   // Currency (base: USD)
   // Note: In a real implementation, these would be fetched from an API
   currency: {
+    // ⚠️ Static rates as of 2024-01-01 — use live option for accuracy
+    // CURRENCY_RATES_DATE: '2024-01-01'
     'usd': 1,
     'eur': 0.85,   // Example rates
     'gbp': 0.75,
@@ -95,13 +97,11 @@ export const UNITS = {
  */
 export function getUnitCategory(unit) {
   const normalizedUnit = unit.toLowerCase();
-  
   for (const [category, units] of Object.entries(UNITS)) {
-    if (units.hasOwnProperty(normalizedUnit)) {
+    if (Object.hasOwn(units, normalizedUnit)) {
       return category;
     }
   }
-  
   return null;
 }
 

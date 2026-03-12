@@ -40,4 +40,25 @@ describe('Input Parser', () => {
     expect(parseInput(undefined)).toBe(null);
     expect(parseInput(123)).toBe(null);
   });
+
+  it('should handle scientific notation', () => {
+    expect(parseInput('1e3km')).toEqual({ value: 1000, unit: 'km' });
+    expect(parseInput('2.5e2m')).toEqual({ value: 250, unit: 'm' });
+    expect(parseInput('1e-3kg')).toEqual({ value: 0.001, unit: 'kg' });
+  });
+
+  it('should reject input exceeding max length', () => {
+    expect(parseInput('1'.repeat(51) + 'km')).toBe(null);
+  });
+
+  it('should reject values exceeding MAX_VALUE', () => {
+    expect(parseInput('9999999999999999km')).toBe(null);
+    expect(parseInput('1e16km')).toBe(null);
+  });
+
+  it('should reject Infinity and NaN edge cases', () => {
+    expect(parseInput('Infinitykm')).toBe(null);
+    expect(parseInput('NaNkm')).toBe(null);
+  });
+
 });

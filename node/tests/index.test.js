@@ -90,4 +90,60 @@ describe('Unit Converter', () => {
       expect(convert('-10km', 'm')).toBe(-10000);
     });
   });
+
+  describe('Case insensitivity', () => {
+    it('should handle uppercase target unit', () => {
+      expect(convert('10km', 'M')).toBe(10000);
+      expect(convert('5lbs', 'KG')).toBeCloseTo(2.26796);
+      expect(convert('1hr', 'MIN')).toBe(60);
+    });
+
+    it('should handle mixed case', () => {
+      expect(convert('10Km', 'Meter')).toBe(10000);
+    });
+  });
+
+  describe('Scientific notation input', () => {
+    it('should convert scientific notation values', () => {
+      expect(convert('1e3km', 'm')).toBe(1000000);
+      expect(convert('2.5e2g', 'kg')).toBeCloseTo(0.25);
+    });
+  });
+
+  describe('Security & edge cases', () => {
+    it('should reject oversized input', () => {
+      expect(() => convert('1'.repeat(51) + 'km', 'm')).toThrow(InvalidInputError);
+    });
+
+    it('should reject values exceeding MAX_VALUE', () => {
+      expect(() => convert('1e16km', 'm')).toThrow(InvalidInputError);
+    });
+
+    it('should reject null/undefined inputs', () => {
+      expect(() => convert(null, 'm')).toThrow(InvalidInputError);
+      expect(() => convert('10km', null)).toThrow(InvalidInputError);
+      expect(() => convert(undefined, 'm')).toThrow(InvalidInputError);
+    });
+
+    it('should reject empty target unit', () => {
+      expect(() => convert('10km', '')).toThrow(InvalidInputError);
+    });
+
+    it('same unit should return same value', () => {
+      expect(convert('10km', 'km')).toBe(10);
+      expect(convert('5kg', 'kg')).toBe(5);
+    });
+  });
+
+  describe('Precision', () => {
+    it('should handle very small values', () => {
+      expect(convert('1mm', 'km')).toBeCloseTo(0.000001);
+    });
+
+    it('should handle full unit names', () => {
+      expect(convert('10kilometer', 'meter')).toBe(10000);
+      expect(convert('5pound', 'gram')).toBeCloseTo(2267.96);
+    });
+  });
+
 });
