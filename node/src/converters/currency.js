@@ -13,10 +13,12 @@ import { factorConvert } from '../utils/convert.js';
 
 
 export function convertCurrency(value, fromUnit, toUnit) {
-  const from = getConversionFactor(fromUnit);
-  const to   = getConversionFactor(toUnit);
+  const from = getConversionFactor(fromUnit); // taux fromUnit/USD
+  const to   = getConversionFactor(toUnit);   // taux toUnit/USD
   if (from === null || to === null) throw new Error('Invalid currency unit');
-  return factorConvert(value, from, to);
+  // Convertir via USD : value → USD → target
+  const inUsd = value * from;   // ramener en USD
+  return inUsd * to;            // convertir vers target
 }
 
 export async function convertCurrencyLive(value, fromUnit, toUnit) {
