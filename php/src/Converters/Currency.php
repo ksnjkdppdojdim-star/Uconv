@@ -3,6 +3,7 @@
 namespace Uconv\Converters;
 
 use Uconv\Units;
+use Uconv\Utils\Convert;
 
 /**
  * Currency converter (base: USD)
@@ -19,8 +20,9 @@ class Currency
             throw new \InvalidArgumentException('Invalid currency');
         }
 
-        $baseValue = $value * $fromFactor;
-        return $baseValue / $toFactor;
+        // Conversion via USD : value → USD → target
+        $inUsd = $value * $fromFactor;
+        return $inUsd * $toFactor;
     }
 }
 

@@ -3,6 +3,7 @@
 namespace Uconv\Converters;
 
 use Uconv\Units;
+use Uconv\Utils\Convert;
 
 /**
  * Weight converter (base: gram)
@@ -18,8 +19,7 @@ class Weight
             throw new \InvalidArgumentException('Invalid weight unit');
         }
 
-        $baseValue = $value * $fromFactor;
-        return $baseValue / $toFactor;
+        return Convert::factorConvert($value, $fromFactor, $toFactor);
     }
 }
 

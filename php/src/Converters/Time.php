@@ -3,6 +3,7 @@
 namespace Uconv\Converters;
 
 use Uconv\Units;
+use Uconv\Utils\Convert;
 
 /**
  * Time converter (base: second)
@@ -18,8 +19,7 @@ class Time
             throw new \InvalidArgumentException('Invalid time unit');
         }
 
-        $baseValue = $value * $fromFactor;
-        return $baseValue / $toFactor;
+        return Convert::factorConvert($value, $fromFactor, $toFactor);
     }
 }
 

@@ -3,6 +3,7 @@
 namespace Uconv\Converters;
 
 use Uconv\Units;
+use Uconv\Utils\Convert;
 
 /**
  * Distance converter (base: meter)
@@ -18,8 +19,7 @@ class Distance
             throw new \InvalidArgumentException('Invalid distance unit');
         }
 
-        $baseValue = $value * $fromFactor;
-        return $baseValue / $toFactor;
+        return Convert::factorConvert($value, $fromFactor, $toFactor);
     }
 }
 
