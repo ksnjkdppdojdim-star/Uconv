@@ -1,0 +1,12 @@
+{
+    "name": "jules.todjinou/test-php",
+    "authors": [
+        {
+            "name": "Jules TODJINOU",
+            "email": "jtodjinou@datatechnologies.bj"
+        }
+    ],
+    "require": {
+        "uconv/uconv": "dev-main"
+    }
+}

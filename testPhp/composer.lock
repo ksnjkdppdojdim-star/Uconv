@@ -1,0 +1,74 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d989d6331ec6ac3b68a4aa2ef4f9ec2c",
+    "packages": [
+        {
+            "name": "uconv/uconv",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ksnjkdppdojdim-star/UconvPhp.git",
+                "reference": "0ffdad2da45dc6c9210e0338c69f93d94b329b1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ksnjkdppdojdim-star/UconvPhp/zipball/0ffdad2da45dc6c9210e0338c69f93d94b329b1d",
+                "reference": "0ffdad2da45dc6c9210e0338c69f93d94b329b1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uconv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ksnjkdppdojdim-star",
+                    "email": "ksnjkdppdoj.dim@gmail.com"
+                }
+            ],
+            "description": "Lightweight unit converter library",
+            "keywords": [
+                "converter",
+                "currency",
+                "distance",
+                "measurement",
+                "time",
+                "units",
+                "weight"
+            ],
+            "support": {
+                "issues": "https://github.com/ksnjkdppdojdim-star/UconvPhp/issues",
+                "source": "https://github.com/ksnjkdppdojdim-star/UconvPhp/tree/main"
+            },
+            "time": "2026-03-23T17:52:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "uconv/uconv": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+}

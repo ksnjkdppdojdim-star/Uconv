@@ -1,94 +1,228 @@
-// Base units for each category
-export const BASE_UNITS = {
-  distance: 'm',    // meter
-  weight: 'g',      // gram
-  time: 's',        // second
-  currency: 'usd'   // US Dollar
+import distance from './units/distance.js';
+import weight from './units/weight.js';
+import time from './units/time.js';
+import currency from './units/currency.js';
+import temperature from './units/temperature.js';
+import speed from './units/speed.js';
+import area from './units/area.js';
+import volume from './units/volume.js';
+import energy from './units/energy.js';
+import pressure from './units/pressure.js';
+import power from './units/power.js';
+
+import UNIT_NAMES_FR from './i18n/fr_FR/LC_MESSAGES/units.fr.js';
+import UNIT_NAMES_EN from './i18n/en_US/LC_MESSAGES/units.en.js';
+
+export const UNITS = {
+  distance,
+  weight,
+  time,
+  currency,
+  temperature,
+  speed,
+  area,
+  volume,
+  energy,
+  pressure,
+  power
 };
 
-// Unit definitions with conversion factors to base units
-export const UNITS = {
-  // Distance (base: meter)
-  distance: {
-    // Metric
-    'm': 1,
-    'meter': 1,
-    'metre': 1,
-    'km': 1000,
-    'kilometer': 1000,
-    'kilometre': 1000,
-    'cm': 0.01,
-    'centimeter': 0.01,
-    'centimetre': 0.01,
-    'mm': 0.001,
-    'millimeter': 0.001,
-    'millimetre': 0.001,
-    
-    // Imperial
-    'ft': 0.3048,
-    'foot': 0.3048,
-    'feet': 0.3048,
-    'in': 0.0254,
-    'inch': 0.0254,
-    'yd': 0.9144,
-    'yard': 0.9144,
-    'mi': 1609.344,
-    'mile': 1609.344
-  },
-  
-  // Weight (base: gram)
-  weight: {
-    // Metric
-    'g': 1,
-    'gram': 1,
-    'kg': 1000,
-    'kilogram': 1000,
-    'mg': 0.001,
-    'milligram': 0.001,
-    't': 1000000,
-    'ton': 1000000,
-    'tonne': 1000000,
-    
-    // Imperial
-    'lb': 453.592,
-    'lbs': 453.592,
-    'pound': 453.592,
-    'oz': 28.3495,
-    'ounce': 28.3495,
-    'st': 6350.29,
-    'stone': 6350.29
-  },
-  
-  // Time (base: second)
-  time: {
-    's': 1,
-    'sec': 1,
-    'second': 1,
-    'min': 60,
-    'minute': 60,
-    'hr': 3600,
-    'hour': 3600,
-    'day': 86400,
-    'week': 604800,
-    'month': 2629746, // Average month
-    'year': 31556952  // Average year
-  },
-  
-  // Currency (base: USD)
-  // Note: In a real implementation, these would be fetched from an API
-  currency: {
-    // ⚠️ Static rates as of 2024-01-01 — use live option for accuracy
-    // CURRENCY_RATES_DATE: '2024-01-01'
-    'usd': 1,
-    'eur': 0.85,   // Example rates
-    'gbp': 0.75,
-    'jpy': 110,
-    'cad': 1.25,
-    'aud': 1.35,
-    'chf': 0.92,
-    'cny': 6.45
-  }
+
+
+// Préfixes binaires (IEC)
+const BINARY_PREFIXES = [
+  { symbol: 'Ki', factor: 1024 },      // kibi
+  { symbol: 'Mi', factor: 1024 ** 2 }, // mebi
+  { symbol: 'Gi', factor: 1024 ** 3 }, // gibi
+  { symbol: 'Ti', factor: 1024 ** 4 }, // tebi
+  { symbol: 'Pi', factor: 1024 ** 5 }, // pebi
+  { symbol: 'Ei', factor: 1024 ** 6 }, // exbi
+  { symbol: 'Zi', factor: 1024 ** 7 }, // zebi
+  { symbol: 'Yi', factor: 1024 ** 8 }  // yobi
+];
+// Catégorie data (octet, bit)
+
+const data = {
+  // Bits (base = 1 bit)
+  'b':   1,
+  'bit': 1,
+  // Octets (bytes, base = 1 byte)
+  'B':    1,
+  'byte': 1,
 };
+
+// Ajoute les préfixes binaires à la catégorie data
+
+
+function addBinaryPrefixes(category) {
+  // Ajoute uniquement les préfixes binaires pour les bits (kib, mib, gib, etc.)
+  for (const { symbol, factor } of BINARY_PREFIXES) {
+    const bitKey = symbol.toLowerCase() + 'b';
+    if (!UNITS[category][bitKey]) {
+      UNITS[category][bitKey] = factor;
+    }
+  }
+}
+
+// Ajouter la catégorie data et ses préfixes APRÈS la création de UNITS
+UNITS.data = data;
+addBinaryPrefixes('data');
+// Table d'équivalences d'unités composées (ex: N·m = J, J/s = W)
+const COMPOSED_EQUIVALENTS = {
+  'n*m': 'j',
+  'j/s': 'w',
+  'w*s': 'j',
+  'pa*m3': 'j',
+  'v*a': 'w',
+  'c*v': 'j',
+  // Ajouter d'autres équivalences physiques ici
+};
+
+
+
+// --- i18n: Localized unit names (externalized) ---
+const UNIT_I18N_MAP = {
+  fr: UNIT_NAMES_FR,
+  fr_FR: UNIT_NAMES_FR,
+  en: UNIT_NAMES_EN,
+  en_US: UNIT_NAMES_EN
+};
+
+/**
+ * Retourne le nom localisé d’une unité (ex: getUnitDisplayName('km', 'fr') => 'kilomètre')
+ * @param {string} unit - nom ou abréviation
+ * @param {string} lang - 'fr' ou 'en'
+ * @returns {string} nom localisé ou le code si inconnu
+ */
+export function getUnitDisplayName(unit, lang = 'en') {
+  unit = unit.toLowerCase();
+  const dict = UNIT_I18N_MAP[lang] || UNIT_I18N_MAP['en'];
+  for (const cat of Object.values(dict)) {
+    if (cat[unit]) return cat[unit];
+  }
+  return unit;
+}
+
+// SI prefixes: symbol, factor
+const SI_PREFIXES = [
+  { symbol: 'Y',  factor: 1e24 },   // yotta
+  { symbol: 'Z',  factor: 1e21 },   // zetta
+  { symbol: 'E',  factor: 1e18 },   // exa
+  { symbol: 'P',  factor: 1e15 },   // peta
+  { symbol: 'T',  factor: 1e12 },   // tera
+  { symbol: 'G',  factor: 1e9 },    // giga
+  { symbol: 'M',  factor: 1e6 },    // mega
+  { symbol: 'k',  factor: 1e3 },    // kilo
+  { symbol: 'h',  factor: 1e2 },    // hecto
+  { symbol: 'da', factor: 1e1 },    // deca
+  { symbol: 'd',  factor: 1e-1 },   // deci
+  { symbol: 'c',  factor: 1e-2 },   // centi
+  { symbol: 'm',  factor: 1e-3 },   // milli
+  { symbol: 'µ',  factor: 1e-6 },   // micro
+  { symbol: 'u',  factor: 1e-6 },   // micro (ascii)
+  { symbol: 'n',  factor: 1e-9 },   // nano
+  { symbol: 'p',  factor: 1e-12 },  // pico
+  { symbol: 'f',  factor: 1e-15 },  // femto
+  { symbol: 'a',  factor: 1e-18 },  // atto
+  { symbol: 'z',  factor: 1e-21 },  // zepto
+  { symbol: 'y',  factor: 1e-24 }   // yocto
+];
+
+// --- Composed Unit Utilities ---
+// Parse a unit string like 'km2', 'm3/s', 'l/min', 'kg*m2/s2', etc.
+// Returns { numerator: [[unit, power], ...], denominator: [[unit, power], ...] }
+export function parseComposedUnit(unitStr) {
+  // Split numerator/denominator (e.g. 'm2/s' or 'kg*m2/s2')
+  const [num, denom] = unitStr.split('/');
+  // Numerator: split by '*' (allow both 'm2' and 'm^2')
+  const parsePart = (part) => part.split('*').map(u => {
+    // Match unit with optional power: 'km2', 'm^2', 's', etc.
+    const match = u.match(/^([a-zA-Z°µ]+)(\^?([0-9]+))?$/);
+    if (!match) return [u, 1];
+    const unit = match[1].toLowerCase();
+    const pow = match[3] ? parseInt(match[3], 10) : (match[2] ? parseInt(match[2], 10) : 1);
+    return [unit, pow || 1];
+  });
+  const numerator = parsePart(num);
+  const denominator = denom ? parsePart(denom) : [];
+  return { numerator, denominator };
+}
+
+// Compute the total factor for a composed unit (e.g. 'km2/s')
+export function getComposedUnitFactor(unitStr) {
+  // Normaliser la chaîne (pas d'espaces, minuscules)
+  const norm = unitStr.replace(/\s+/g, '').toLowerCase();
+  if (COMPOSED_EQUIVALENTS[norm]) {
+    // Si équivalent connu, utiliser le facteur de l'unité équivalente
+    return getConversionFactor(COMPOSED_EQUIVALENTS[norm]);
+  }
+  // Sinon, calcul classique
+  const { numerator, denominator } = parseComposedUnit(unitStr);
+  let factor = 1;
+  for (const [unit, pow] of numerator) {
+    const f = getConversionFactor(unit);
+    if (f == null) throw new Error('Unknown unit: ' + unit);
+    factor *= Math.pow(f, pow);
+  }
+  for (const [unit, pow] of denominator) {
+    const f = getConversionFactor(unit);
+    if (f == null) throw new Error('Unknown unit: ' + unit);
+    factor /= Math.pow(f, pow);
+  }
+  return factor;
+}
+
+
+
+
+// Génère dynamiquement les variantes SI pour les unités de base
+function addSIPrefixes(category, baseUnit) {
+  for (const { symbol, factor } of SI_PREFIXES) {
+    // Exclure le préfixe qui donnerait le même nom que l’unité de base
+    if (symbol.toLowerCase() === baseUnit.toLowerCase()) continue;
+    // Always use lowercase for SI-prefixed units
+    const prefixed = (symbol + baseUnit).toLowerCase();
+    if (!UNITS[category][prefixed]) {
+      UNITS[category][prefixed] = factor * UNITS[category][baseUnit];
+    }
+  }
+}
+
+// Appliquer aux catégories compatibles (distance, weight, area)
+addSIPrefixes('distance', 'm');
+addSIPrefixes('weight', 'g');
+addSIPrefixes('area', 'm2');
+// Volume: SI prefixes for both m3 and l
+addSIPrefixes('volume', 'm3');
+addSIPrefixes('volume', 'l');
+/**
+ * Register a custom unit dynamically
+ * @param {string} name - Nom de l’unité (ex: 'foo')
+ * @param {object} options - { factor, category }
+ */
+export function registerUnit(name, { factor, category }) {
+  if (!name || typeof name !== 'string') throw new Error('Unit name must be a string');
+  if (!category || !UNITS[category]) throw new Error('Unknown category: ' + category);
+  if (typeof factor !== 'number' || !isFinite(factor) || factor === 0) throw new Error('Invalid factor');
+  UNITS[category][name.toLowerCase()] = factor;
+}
+// Base units for each category
+
+// Base units for each category
+export const BASE_UNITS = {
+  distance: 'm',
+  weight: 'g',
+  time: 's',
+  currency: 'usd',
+  temperature: 'c',
+  speed: 'm/s',
+  area: 'm2',
+  volume: 'm3',
+  energy: 'j',
+  pressure: 'pa',
+  power: 'w'
+};
+
 
 /**
  * Get the category of a unit

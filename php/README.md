@@ -8,10 +8,18 @@ Lightweight PHP unit converter (PSR-4).
 cd php
 composer install
 ```
+**Via Composer (recommandé)**
 
-## Usage
+```
+composer require uconv/uconv
+```
 
-```php
+**Ou depuis le dépôt (pour développement)**
+
+```
+cd php
+composer install
+```
 <?php
 require 'vendor/autoload.php';
 
@@ -35,6 +43,5 @@ echo Uconv::convert("100USD", "EUR");  // ~85
 - Static API `Uconv::convert()`
 - Custom exceptions
 - Exact Node.js/Python parity
-
-See root README.
+**Remarque :** Le code source PHP se trouve dans le sous-dossier `/php` du dépôt principal.
 

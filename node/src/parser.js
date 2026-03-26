@@ -5,7 +5,8 @@
  */
 const MAX_INPUT_LENGTH = 50;
 const MAX_VALUE = 1e15;
-const PARSE_REGEX = /^(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*([a-zA-Z°]+)$/i;
+// Accept units with *, /, ^, digits (e.g. 'kg*m2/s2', 'l/min', 'm^2/s')
+const PARSE_REGEX = /^(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*([a-zA-Z°µ][a-zA-Z0-9°µ\/\*\^]*)$/i;
 
 export function parseInput(input) {
   if (typeof input !== 'string') return null;
