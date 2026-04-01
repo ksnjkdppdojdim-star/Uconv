@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@mahounou/uconv)](https://www.npmjs.com/package/@mahounou/uconv)
 [![downloads](https://img.shields.io/npm/dm/@mahounou/uconv)](https://www.npmjs.com/package/@mahounou/uconv)
 [![license](https://img.shields.io/github/license/ksnjkdppdojdim-star/Uconv)](https://github.com/ksnjkdppdojdim-star/Uconv/blob/main/LICENSE)
-[![tests](https://img.shields.io/github/actions/workflow/status/ksnjkdppdojdim-star/Uconv/npm-publish.yml?label=tests)](https://github.com/ksnjkdppdojdim-star/Uconv/actions)
+[![tests](https://img.shields.io/github/actions/workflow/status/ksnjkdppdojdim-star/Uconv/ci.yml?branch=main&label=tests)](https://github.com/ksnjkdppdojdim-star/Uconv/actions/workflows/ci.yml)
 
 
 A lightweight, multi-language unit converter library supporting distance, weight, time, and currency conversions.
