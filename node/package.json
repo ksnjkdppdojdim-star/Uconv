@@ -1,13 +1,15 @@
 {
   "name": "@mahounou/uconv",
-  "version": "0.2.10",
+  "version": "0.3.11",
   "description": "Lightweight unit converter library",
   "type": "module",
   "main": "src/index.js",
   "exports": {
     ".": "./src/index.js"
   },
-  "bin": { "uconv": "./cli.js" },
+  "bin": {
+    "uconv": "cli.js"
+  },
   "files": [
     "src/",
     "README.md"
@@ -27,9 +29,14 @@
   ],
   "author": "",
   "license": "MIT",
+  "homepage": "https://github.com/ksnjkdppdojdim-star/Uconv#readme",
+  "bugs": {
+    "url": "https://github.com/ksnjkdppdojdim-star/Uconv/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ksnjkdppdojdim-star/Uconv"
+    "url": "git+https://github.com/ksnjkdppdojdim-star/Uconv.git",
+    "directory": "node"
   },
   "devDependencies": {
     "vitest": "latest"

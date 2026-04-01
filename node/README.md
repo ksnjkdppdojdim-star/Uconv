@@ -13,9 +13,9 @@ convert('246m', 'foo'); // 2
 # @mahounou/uconv
 
 ![npm version](https://img.shields.io/npm/v/@mahounou/uconv)
-![build](https://img.shields.io/github/actions/workflow/status/mahounou/uconv/nodejs.yml?branch=main)
-![tests](https://img.shields.io/badge/tests-passing-brightgreen)
-![license](https://img.shields.io/github/license/mahounou/uconv)
+![build](https://img.shields.io/github/actions/workflow/status/ksnjkdppdojdim-star/Uconv/ci.yml?branch=main&label=build)
+![tests](https://img.shields.io/github/actions/workflow/status/ksnjkdppdojdim-star/Uconv/ci.yml?branch=main&label=tests)
+![license](https://img.shields.io/github/license/ksnjkdppdojdim-star/Uconv)
 
 Universal unit converter for Node.js — zero runtime dependencies, multi-language API parity (Node.js, PHP, Python).
 
